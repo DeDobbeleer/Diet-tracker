@@ -2,7 +2,7 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from .models import Entry
 from .forms import EntryForm, ImportCSVForm
-from django.db.models import Sum
+from django.db.models import Sum, Q
 from django.core.paginator import Paginator
 from django.http import HttpResponse
 import csv
@@ -11,9 +11,13 @@ from io import TextIOWrapper
 
 def entry_list(request):
     period_filter = request.GET.get('period', '')
+    search_query = request.GET.get('search', '')
+    
     entries = Entry.objects.all().order_by('date', 'time')
     if period_filter:
         entries = entries.filter(period=period_filter)
+    if search_query:
+        entries = entries.filter(Q(data__icontains=search_query))
     
     paginator = Paginator(entries, 10)
     page_number = request.GET.get('page')
@@ -47,6 +51,7 @@ def entry_list(request):
         'daily_calories_consumed': daily_calories_consumed,
         'periods': periods,
         'selected_period': period_filter,
+        'search_query': search_query,
     })
 
 def add_entry(request):

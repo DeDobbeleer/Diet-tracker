@@ -19,7 +19,7 @@
         
         <div class="mb-3">
             <a href="{% url 'add_entry' %}" class="btn btn-success me-2">Ajouter une entrée</a>
-            <a href="{% url 'export_csv' %}" class="btn btn-info">Exporter en CSV</a>
+            <a href="{% url 'export_csv' %}" class="btn btn-info me-2">Exporter en CSV</a>
             <a href="{% url 'import_csv' %}" class="btn btn-primary">Importer un CSV</a>
         </div>
         
@@ -37,6 +37,15 @@
                             </option>
                         {% endfor %}
                     </select>
+                </div>
+                <div class="col-auto">
+                    <label for="search" class="form-label">Rechercher :</label>
+                </div>
+                <div class="col-auto">
+                    <input type="text" name="search" id="search" class="form-control" value="{{ search_query }}" placeholder="Rechercher dans la description">
+                </div>
+                <div class="col-auto">
+                    <button type="submit" class="btn btn-primary">Rechercher</button>
                 </div>
             </div>
         </form>
@@ -79,10 +88,10 @@
             <ul class="pagination justify-content-center">
                 {% if page_obj.has_previous %}
                     <li class="page-item">
-                        <a class="page-link" href="?page=1{% if selected_period %}&period={{ selected_period }}{% endif %}">« Première</a>
+                        <a class="page-link" href="?page=1{% if selected_period %}&period={{ selected_period }}{% endif %}{% if search_query %}&search={{ search_query }}{% endif %}">« Première</a>
                     </li>
                     <li class="page-item">
-                        <a class="page-link" href="?page={{ page_obj.previous_page_number }}{% if selected_period %}&period={{ selected_period }}{% endif %}">Précédente</a>
+                        <a class="page-link" href="?page={{ page_obj.previous_page_number }}{% if selected_period %}&period={{ selected_period }}{% endif %}{% if search_query %}&search={{ search_query }}{% endif %}">Précédente</a>
                     </li>
                 {% endif %}
                 <li class="page-item disabled">
@@ -90,10 +99,10 @@
                 </li>
                 {% if page_obj.has_next %}
                     <li class="page-item">
-                        <a class="page-link" href="?page={{ page_obj.next_page_number }}{% if selected_period %}&period={{ selected_period }}{% endif %}">Suivante</a>
+                        <a class="page-link" href="?page={{ page_obj.next_page_number }}{% if selected_period %}&period={{ selected_period }}{% endif %}{% if search_query %}&search={{ search_query }}{% endif %}">Suivante</a>
                     </li>
                     <li class="page-item">
-                        <a class="page-link" href="?page={{ page_obj.paginator.num_pages }}{% if selected_period %}&period={{ selected_period }}{% endif %}">Dernière »</a>
+                        <a class="page-link" href="?page={{ page_obj.paginator.num_pages }}{% if selected_period %}&period={{ selected_period }}{% endif %}{% if search_query %}&search={{ search_query }}{% endif %}">Dernière »</a>
                     </li>
                 {% endif %}
             </ul>
